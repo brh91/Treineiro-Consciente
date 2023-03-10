@@ -1,0 +1,56 @@
+import time
+
+# Define a lista de jogadores e seus tempos em campo
+jogadores = {
+    "Felipe": 0,
+    "Mericles": 0,
+    "Ruan M.": 0,
+    "Neto Reis": 0,
+    "Alves": 0,
+    "Kayo": 0,
+    "Vinicius": 0,
+    "Rodrigo": 0,
+    "Fabrício": 0,
+    "Diego B.": 0,
+    "Lucky": 0,
+}
+
+# Define o tempo mínimo em campo para cada jogador (em segundos)
+tempo_minimo = 720
+
+# Define o tempo de cada tempo da partida (em segundos)
+tempo_partida = 1200
+
+# Inicia a contagem do tempo da partida
+tempo_total = 0
+
+# Loop principal da aplicação
+while tempo_total < tempo_partida:
+    # Pede ao usuário para selecionar os jogadores iniciais
+    jogadores_iniciais = input("Selecione os 8 jogadores iniciais (separados por vírgula): ").split(",")
+    jogadores_iniciais = [j.strip() for j in jogadores_iniciais]
+
+    # Inicia a contagem do tempo dos jogadores iniciais
+    for jogador in jogadores_iniciais:
+        jogadores[jogador] = time.time()
+
+    # Aguarda o tempo de cada tempo da partida (20 minutos)
+    time.sleep(tempo_partida/2)
+
+    # Calcula o tempo em que cada jogador ficou em campo
+    for jogador, tempo in jogadores.items():
+        jogadores[jogador] = time.time() - tempo
+
+    # Verifica se cada jogador jogou pelo menos o tempo mínimo
+    for jogador, tempo in jogadores.items():
+        if tempo < tempo_minimo:
+            # Caso não tenha jogado o tempo mínimo, adiciona o tempo que faltou no próximo tempo da partida
+            jogadores[jogador] = tempo + (tempo_minimo - tempo)
+            print(f"{jogador} jogou menos de {tempo_minimo/60} minutos e jogará mais {tempo_minimo - tempo} segundos no próximo tempo da partida.")
+
+    # Soma o tempo da primeira parte da partida no tempo total da partida
+    tempo_total += tempo_partida/2
+
+# Imprime o tempo total em campo de cada jogador
+for jogador, tempo in jogadores.items():
+    print(f"{jogador} jogou {tempo/60} minutos.")
